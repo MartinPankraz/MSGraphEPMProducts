@@ -1,0 +1,91 @@
+<mvc:View
+	controllerName="msgraphepmproducts.msgraphepmproducts.controller.Object"
+	xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:layout="sap.ui.layout" 
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:semantic="sap.f.semantic">
+
+	<semantic:SemanticPage
+		id="page"
+		headerPinnable="false"
+		toggleHeaderOnTitleClick="false"
+		busy="{objectView>/busy}"
+		busyIndicatorDelay="{objectView>/delay}">
+
+		<semantic:titleHeading>
+			<Title
+				text="{i18n>objectTitle}"
+				level="H2"/>
+		</semantic:titleHeading>
+
+		<f:SimpleForm columnsM="1" title="Product Details {ProductID}" editable="false" layout="ResponsiveGridLayout" singleContainerFullSize="false">
+            <f:content>
+                <Label text="Image" width="100%">
+                    <layoutData>
+                        <layout:GridData span="L4 M4"/>
+                    </layoutData>
+                </Label>
+                <Label text="Product ID" width="100%">
+                    <layoutData>
+                        <layout:GridData span="L4 M4"/>
+                    </layoutData>
+                </Label>
+                <Link press="_openQuickView" enabled="{= !!${session>/givenName} }" text="{ProductID}"/>
+                
+                <Label text="Name">
+                    <layoutData>
+                        <layout:GridData span="L4 M4"/>
+                    </layoutData>
+                </Label>
+                <Link press="_openQuickView" enabled="{= !!${session>/givenName} }" text="{Name}"/>
+
+                <Label text="Supplier Name">
+                    <layoutData>
+                        <layout:GridData span="L4 M4"/>
+                    </layoutData>
+                </Label>
+                <Link press="_openQuickView" enabled="{= !!${session>/givenName} }" text="{SupplierName}"/>
+                
+                <Label text="Description">
+                    <layoutData>
+                        <layout:GridData span="L4 M4"/>
+                    </layoutData>
+                </Label>
+                <Text text="{Description}"/>
+                
+                <Label text="Price">
+                    <layoutData>
+                        <layout:GridData span="L4 M4"/>
+                    </layoutData>
+                </Label>
+                
+                <Text text="{Price}"/>
+                <Label text="CurrencyCode">
+                    <layoutData>
+                        <layout:GridData span="L4 M4"/>
+                    </layoutData>
+                </Label>
+                
+                <Text text="{CurrencyCode}"/>
+                <Label text="WeightMeasure">
+                    <layoutData>
+                        <layout:GridData span="L4 M4"/>
+                    </layoutData>
+                </Label>
+               
+                <Text text="{WeightMeasure} {WeightUnit}"/>
+                <Label text="ChangedAt">
+                    <layoutData>
+                        <layout:GridData span="L4 M4"/>
+                    </layoutData>
+                </Label>
+                
+                <Link press="_openQuickView" enabled="{= !!${session>/givenName} }" text="{ChangedAt}"/>
+            </f:content>
+        </f:SimpleForm>
+
+
+	</semantic:SemanticPage>
+
+</mvc:View>
