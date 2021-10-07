@@ -4,7 +4,7 @@
 	<SelectDialog
 		id="mySelectDialog"
 		noDataText="No matching Emails Found"
-		title="Associated Emails"
+		title="Associated Emails (click link to navigate)"
 		items="{
 			path: 'msData>/value'
 		}">
@@ -12,12 +12,14 @@
             sender="{msData>subject} from {msData>sender/emailAddress/name} ({msData>sender/emailAddress/address})"
             icon="sap-icon://email-read"
             senderPress="onOpenEmail"
-            iconPress="onOpenEmail"
+            senderActive="true"
+            iconActive="false"
             iconDensityAware="false"
             info="{Type}"
             timestamp="{ path : 'msData>createdDateTime', type : 'sap.ui.model.type.DateTime', formatOptions : { source : { UTC: true, pattern : 'yyyy-MM-dd\'T\'hh\':\'mm\':\'ss\'Z\'' }, style: 'full', relative: true } }"
             text="{msData>bodyPreview}"
-            convertLinksToAnchorTags="All">
+            convertLinksToAnchorTags="All"
+            press="onOpenEmail">
         </FeedListItem>
 	</SelectDialog>
 </core:FragmentDefinition>

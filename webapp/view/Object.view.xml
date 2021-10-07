@@ -2,6 +2,7 @@
 	controllerName="msgraphepmproducts.msgraphepmproducts.controller.Object"
 	xmlns="sap.m"
     xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
     xmlns:layout="sap.ui.layout" 
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:semantic="sap.f.semantic">
@@ -18,9 +19,16 @@
 				text="{i18n>objectTitle}"
 				level="H2"/>
 		</semantic:titleHeading>
-
-		<f:SimpleForm columnsM="1" title="Product Details {ProductID}" editable="false" layout="ResponsiveGridLayout" singleContainerFullSize="false">
+        <VBox class="sapUiSmallMargin">
+		<f:SimpleForm
+            title="Product Details {ProductID}"
+            editable="false"
+            layout="ColumnLayout"
+            columnsM="2"
+			columnsL="3"
+			columnsXL="4">
             <f:content>
+                <core:Title text="Master data" />
                 <Label text="Image" width="100%">
                     <layoutData>
                         <layout:GridData span="L4 M4"/>
@@ -82,9 +90,11 @@
                 </Label>
                 
                 <Link press="_openQuickView" enabled="{= !!${session>/givenName} }" text="{ChangedAt}"/>
+                <core:Title text="Example Image" />
+                <Image src="https://sapes5.sapdevcenter.com/sap/public/bc/NWDEMO_MODEL/IMAGES/{ProductID}.jpg" width="100px"/>
             </f:content>
         </f:SimpleForm>
-
+        </VBox>
 
 	</semantic:SemanticPage>
 

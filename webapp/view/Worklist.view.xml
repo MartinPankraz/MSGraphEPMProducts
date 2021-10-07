@@ -55,7 +55,10 @@
 				</headerToolbar>
 
 				<columns>
-					<Column id="idColumn">
+					<Column id="pictureColumn">
+						<Text text="{i18n>tablePictureColumnTitle}" id="pictureColumnTitle"/>
+					</Column>
+                    <Column id="idColumn">
 						<Text text="{i18n>tableidColumnTitle}" id="idColumnTitle"/>
 					</Column>
                     <Column id="idNameColumn" hAlign="End">
@@ -77,7 +80,8 @@
 						type="Navigation"
 						press=".onPress">
 						<cells>
-							<ObjectIdentifier
+							<Image src="https://demo-sap-apim.azure-api.net/sap/public/bc/NWDEMO_MODEL/IMAGES/{ProductID}.jpg" width="100px"/>
+                            <ObjectIdentifier
 								title="{ProductID}"/>
                             <Text text="{Name}" />
                             <Text text="{Category}" />
