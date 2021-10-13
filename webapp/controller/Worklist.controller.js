@@ -207,7 +207,7 @@ sap.ui.define([
                     })
                     .then(fnCb)
                     .fail(function (error) {
-                        MessageToast.show("Error, please check the log for details");
+                        MessageToast.show("MSAL Error, please check the log for details");
                         $.sap.log.error(JSON.stringify(error.responseJSON.error));
                     });
                 }.bind(this));

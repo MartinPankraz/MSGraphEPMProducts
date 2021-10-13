@@ -191,7 +191,7 @@ sap.ui.define([
                 }
             })
             .fail(function (error) {
-                MessageToast.show("Error, please check the log for details");
+                MessageToast.show("Timeout, please go back to overview and refresh.");
                 $.sap.log.error(JSON.stringify(error.responseJSON.error));
             });
         }
