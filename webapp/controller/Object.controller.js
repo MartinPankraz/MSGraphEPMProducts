@@ -14,7 +14,7 @@ sap.ui.define([
         
         config: {
             graphBaseEndpoint: "https://graph.microsoft.com/v1.0/",
-            queryMessagesSuffix: "me/messages?$search=\"$1\"&$top=150"
+            queryMessagesSuffix: "me/messages?$search=\"$1\"&$top=15"
         },
 
 		/* =========================================================== */
@@ -156,6 +156,7 @@ sap.ui.define([
 
         _openQuickView: function (oEvent) {
             var sLinkText = oEvent.getSource().getText(),
+                oClickSource = oEvent.getSource(),
                 oView = this.getView(),
                 oModel = new JSONModel(),
                 that = this;
@@ -174,6 +175,7 @@ sap.ui.define([
                     o.bodyPreview = o.bodyPreview.replace(sLinkText, "<strong>" + sLinkText + "</strong>");
                     return o;
                 });*/
+                results.count = results.value.length;
                 oModel.setData(results);
                 if (!that._pDialog) {
                     that._pDialog = Fragment.load({
@@ -184,17 +186,23 @@ sap.ui.define([
                         //oDialog.setModel(oView.getModel("msData"));
                         that._pDialog = oDialog;
                         oView.addDependent(that._pDialog);
-                        that._pDialog.open();
+                        that._pDialog.openBy(oClickSource);
                     });
                 }else{
-                    that._pDialog.open();
+                    that._pDialog.openBy(oClickSource);
                 }
             })
             .fail(function (error) {
                 MessageToast.show("Timeout, please go back to overview and refresh.");
                 $.sap.log.error(JSON.stringify(error.responseJSON.error));
             });
-        }
+        },
+
+		handleCloseButton: function (oEvent) {
+			// note: We don't need to chain to the _pPopover promise, since this event-handler
+			// is only called from within the loaded dialog itself.
+			this.byId("mySelectDialog").close();
+		}
 
 	});
 

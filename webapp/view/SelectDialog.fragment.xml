@@ -1,25 +1,64 @@
 <core:FragmentDefinition
 	xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
 	xmlns:core="sap.ui.core">
-	<SelectDialog
-		id="mySelectDialog"
-		noDataText="No matching Emails Found"
-		title="Associated Emails (click link to navigate)"
-		items="{
-			path: 'msData>/value'
-		}">
-		<FeedListItem
-            sender="{msData>subject} from {msData>sender/emailAddress/name} ({msData>sender/emailAddress/address})"
-            icon="sap-icon://email-read"
-            senderPress="onOpenEmail"
-            senderActive="true"
-            iconActive="false"
-            iconDensityAware="false"
-            info="{Type}"
-            timestamp="{ path : 'msData>createdDateTime', type : 'sap.ui.model.type.DateTime', formatOptions : { source : { UTC: true, pattern : 'yyyy-MM-dd\'T\'hh\':\'mm\':\'ss\'Z\'' }, style: 'full', relative: true } }"
-            text="{msData>bodyPreview}"
-            convertLinksToAnchorTags="All"
-            press="onOpenEmail">
-        </FeedListItem>
-	</SelectDialog>
+    	<ResponsivePopover
+            id="mySelectDialog"
+            title="Associated Items in M365 (top 15)"
+            class="sapUiContentPadding"
+            placement="Bottom" >
+            <endButton>
+                <Button text="Close" press="handleCloseButton" />
+            </endButton>
+            <content>
+                <IconTabBar
+                    id="idIconTabBarFiori2"
+                    expanded="{device>/isNoPhone}"
+                    class="sapUiResponsiveContentPadding">
+                    <items>
+                        <IconTabFilter
+                            text="Outlook 365"
+                            key="outlook"
+                            count="{msData>/count}">
+                            <List
+                                items="{
+                                    path: 'msData>/value'
+                                }" >
+                                <FeedListItem
+                                    sender="{msData>subject} from {msData>sender/emailAddress/name} ({msData>sender/emailAddress/address})"
+                                    icon="sap-icon://email-read"
+                                    senderPress="onOpenEmail"
+                                    senderActive="true"
+                                    iconActive="false"
+                                    iconDensityAware="false"
+                                    info="{Type}"
+                                    timestamp="{ path : 'msData>createdDateTime', type : 'sap.ui.model.type.DateTime', formatOptions : { source : { UTC: true, pattern : 'yyyy-MM-dd\'T\'hh\':\'mm\':\'ss\'Z\'' }, style: 'full', relative: true } }"
+                                    text="{msData>bodyPreview}"
+                                    convertLinksToAnchorTags="All"
+                                    press="onOpenEmail">
+                                </FeedListItem>
+                            </List>
+                        </IconTabFilter>
+                        <IconTabFilter
+                            text="Teams"
+                            key="teams"
+                            count="0">
+                            <Text text="coming soon ..." />
+                        </IconTabFilter>
+                        <IconTabFilter
+                            text="OneDrive"
+                            key="onedrive"
+                            count="0">
+                            <Text text="coming soon ..." />
+                        </IconTabFilter>
+                        <IconTabFilter
+                            text="SharePoint"
+                            key="sharepoint"
+                            count="0">
+                            <Text text="coming soon ..." />
+                        </IconTabFilter>
+                    </items>
+                </IconTabBar>
+            </content>
+        </ResponsivePopover>
 </core:FragmentDefinition>
