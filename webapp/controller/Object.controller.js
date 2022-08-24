@@ -13,8 +13,9 @@ sap.ui.define([
         formatter: formatter,
         
         config: {
-            graphBaseEndpoint: "https://graph.microsoft.com/v1.0/",
-            queryMessagesSuffix: "me/messages?$search=\"$1\"&$top=15"
+            graphBaseEndpoint: "https://graph.microsoft.com/",
+            queryOutlookMessagesSuffix: "v1.0/me/messages?$search=\"$1\"&$top=15",
+            queryTeamsMessagesSuffix: "beta/teams/c1eedb2a-3a35-4f0e-98e3-898c2d5e907c/channels/19:bd6b21df4c3c4beb8f4401900e52dc48@thread.tacv2/messages"
         },
 
 		/* =========================================================== */
@@ -77,6 +78,11 @@ sap.ui.define([
 
         onOpenEmail: function (oEvent) {
             var sEmail = oEvent.getSource().getBindingContext("msData").getProperty("webLink");
+            window.open(sEmail, "_blank");
+        },
+
+        onOpenChat: function (oEvent) {
+            var sEmail = oEvent.getSource().getBindingContext("msTeamsData").getProperty("webUrl");
             window.open(sEmail, "_blank");
         },
 
@@ -159,24 +165,39 @@ sap.ui.define([
                 oClickSource = oEvent.getSource(),
                 oView = this.getView(),
                 oModel = new JSONModel(),
+                oTeamsModel = new JSONModel(),
                 that = this;
 
-            oView.setModel(oModel, "msData"),
+            oView.setModel(oModel, "msData");
+            oView.setModel(oTeamsModel, "msTeamsData");
             
-            $.ajax({
-                url: this.config.graphBaseEndpoint + this.config.queryMessagesSuffix.replace("$1", sLinkText),
-                type: "GET",
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Authorization", "Bearer " + that.myMSALAccessToken);
-                }
-            })
-            .then(function (results) {
+            $.when(
+                $.ajax({
+                    url: this.config.graphBaseEndpoint + this.config.queryOutlookMessagesSuffix.replace("$1", sLinkText),
+                    type: "GET",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("Authorization", "Bearer " + that.myMSALAccessToken);
+                    }
+                }),
+                $.ajax({
+                    url: this.config.graphBaseEndpoint + this.config.queryTeamsMessagesSuffix,
+                    type: "GET",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("Authorization", "Bearer " + that.myMSALAccessToken);
+                    }
+                })
+            ).then(function (result1, result2) {
                 /*results.value = results.value.map(function (o) {
                     o.bodyPreview = o.bodyPreview.replace(sLinkText, "<strong>" + sLinkText + "</strong>");
                     return o;
                 });*/
-                results.count = results.value.length;
-                oModel.setData(results);
+                result1[0].count = result1[0].value.length;
+                result2[0] = that.checkTeamsMessages(result2[0], sLinkText);
+                result2[0].count = result2[0].value.length;
+
+                //var structure = {'outlook':result1[0],'teams':result2[0]};
+                oModel.setData(result1[0]);
+                oTeamsModel.setData(result2[0]);
                 if (!that._pDialog) {
                     that._pDialog = Fragment.load({
                         id: oView.getId(),
@@ -196,6 +217,17 @@ sap.ui.define([
                 MessageToast.show("Timeout, please go back to overview and refresh.");
                 $.sap.log.error(JSON.stringify(error.responseJSON.error));
             });
+        },
+
+        checkTeamsMessages: function(messages, linkText){
+            var SearchedMessages = [];
+            for(var i=0;i<messages.value.length;i++){
+                if(messages.value[i].body.content.includes(linkText)){
+                    SearchedMessages.push(messages.value[i]);
+                }
+            }
+            messages.value = SearchedMessages;
+            return messages;
         },
 
 		handleCloseButton: function (oEvent) {

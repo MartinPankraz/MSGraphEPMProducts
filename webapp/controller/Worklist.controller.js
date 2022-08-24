@@ -31,7 +31,7 @@ sap.ui.define([
             userInfoSuffix: "me/",
             queryMessagesSuffix: "me/messages?$search=\"$1\"&$top=150",
             scopeConfig: {
-                scopes: ['User.Read', 'Mail.Read']
+                scopes: ['User.Read', 'Mail.Read', 'ChannelMessage.Read.All']
             }
         },
 
@@ -88,9 +88,9 @@ sap.ui.define([
             
             this.getView().addEventDelegate({
                 onBeforeHide: function(event) {
-                const targetView = event.to;
-                const dataToPass = that.myMSALAccessToken;
-                targetView.data("data", dataToPass);
+                    const targetView = event.to;
+                    const dataToPass = that.myMSALAccessToken;
+                    targetView.data("data", dataToPass);
                 }
             }, this);
 		},

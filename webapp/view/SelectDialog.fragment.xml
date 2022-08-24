@@ -42,8 +42,25 @@
                         <IconTabFilter
                             text="Teams"
                             key="teams"
-                            count="0">
-                            <Text text="coming soon ..." />
+                            count="{msTeamsData>/count}">
+                            <List
+                                items="{
+                                    path: 'msTeamsData>/value'
+                                }" >
+                                <FeedListItem
+                                    sender="{msTeamsData>from/user/displayName}"
+                                    icon="sap-icon://travel-request"
+                                    senderPress="onOpenChat"
+                                    senderActive="true"
+                                    iconActive="false"
+                                    iconDensityAware="false"
+                                    info="{Type}"
+                                    timestamp="{ path : 'msTeamsData>lastModifiedDateTime', type : 'sap.ui.model.type.DateTime', formatOptions : { source : { UTC: true, pattern : 'yyyy-MM-dd\'T\'hh\':\'mm\':\'ss.SSS\'Z\'' }, style: 'full', relative: true } }"
+                                    text="{msTeamsData>body/content}"
+                                    convertLinksToAnchorTags="All"
+                                    press="onOpenChat">
+                                </FeedListItem>
+                            </List>
                         </IconTabFilter>
                         <IconTabFilter
                             text="OneDrive"
